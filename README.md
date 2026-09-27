@@ -3,10 +3,14 @@
 > **BITS Digital CodeForge V1.0 Challenge Submission**  
 > A production-grade, privacy-first, client-side academic grading console designed for instructors to ingest student scores, configure continuous grade boundaries, inspect borderline cases, and export finalized grades with zero server-side friction.
 
-[![Repository](https://img.shields.io/badge/GitHub-BitsAssignmentcodeforge-indigo.svg)](https://github.com/ajaditya103-a11y/BitsAssignmentcodeforge)
-[![Platform](https://img.shields.io/badge/Platform-Modern%20Web%20(Pure%20Client--Side)-blue.svg)](#)
-[![Data Protection](https://img.shields.io/badge/Security-100%25%20Local%20%2F%20Offline%20Safe-success.svg)](#)
-[![Accessibility](https://img.shields.io/badge/A11y-WCAG%20AA%20Compliant-purple.svg)](#)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-bitsgrade.netlify.app-success.svg?style=for-the-badge&logo=netlify)](https://bitsgrade.netlify.app/)
+[![Repository](https://img.shields.io/badge/GitHub-BitsAssignmentcodeforge-indigo.svg?style=for-the-badge&logo=github)](https://github.com/ajaditya103-a11y/BitsAssignmentcodeforge)
+[![Platform](https://img.shields.io/badge/Platform-Modern%20Web%20(Client--Side)-blue.svg?style=for-the-badge)](#)
+[![Accessibility](https://img.shields.io/badge/A11y-WCAG%20AA%20Compliant-purple.svg?style=for-the-badge)](#)
+
+> 🌐 **Live Web Application:** [**https://bitsgrade.netlify.app**](https://bitsgrade.netlify.app/)  
+> 📦 **GitHub Repository:** [**https://github.com/ajaditya103-a11y/BitsAssignmentcodeforge**](https://github.com/ajaditya103-a11y/BitsAssignmentcodeforge)
+
 
 ---
 
