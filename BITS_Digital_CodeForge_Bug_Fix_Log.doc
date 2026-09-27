@@ -1,0 +1,227 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+  <meta charset="utf-8">
+  <title>BITS Pilani Digital – CodeForge V1.0 Bug Fix Log</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+      <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    body {
+      font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.4;
+      color: #111827;
+      margin: 1in;
+    }
+    h1 {
+      font-size: 20pt;
+      color: #1e1b4b;
+      margin-bottom: 2pt;
+    }
+    h2 {
+      font-size: 14pt;
+      color: #4338ca;
+      font-weight: normal;
+      margin-top: 0;
+      margin-bottom: 12pt;
+    }
+    h3 {
+      font-size: 13pt;
+      color: #1e1b4b;
+      border-bottom: 2pt solid #4338ca;
+      padding-bottom: 4pt;
+      margin-top: 18pt;
+    }
+    .meta-box {
+      background-color: #f8fafc;
+      border: 1pt solid #cbd5e1;
+      padding: 10pt;
+      margin-bottom: 16pt;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10pt;
+      margin-bottom: 16pt;
+      font-size: 9.5pt;
+    }
+    th {
+      background-color: #1e1b4b;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 6pt 8pt;
+      border: 1pt solid #1e1b4b;
+      text-align: left;
+    }
+    td {
+      padding: 6pt 8pt;
+      border: 1pt solid #cbd5e1;
+      vertical-align: top;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    .badge {
+      font-weight: bold;
+      color: #4338ca;
+    }
+    code {
+      font-family: Consolas, monospace;
+      font-size: 9pt;
+      background-color: #f1f5f9;
+      padding: 2pt 4pt;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>BITS Pilani Digital</h1>
+  <h2>CodeForge V1.0 • Official Bug Fix Log & Diagnostic Audit</h2>
+
+  <div class="meta-box">
+    <p style="margin:0 0 4pt 0;"><strong>Candidate:</strong> Aditya Jaiswal</p>
+    <p style="margin:0 0 4pt 0;"><strong>GitHub Repository:</strong> <a href="https://github.com/ajaditya103-a11y/BitsAssignmentcodeforge">ajaditya103-a11y/BitsAssignmentcodeforge</a></p>
+    <p style="margin:0 0 4pt 0;"><strong>Live Application:</strong> <a href="https://bitsgrade.netlify.app/">https://bitsgrade.netlify.app</a></p>
+    <p style="margin:0;"><strong>Date:</strong> September 27, 2026</p>
+  </div>
+
+  <h3>Executive Summary</h3>
+  <p>
+    This document serves as the formal <strong>Stage 1 (Debug)</strong> submission deliverable for the BITS Digital CodeForge V1.0 challenge.
+    All 12 identified bugs spanning data ingestion, boundary mathematical continuity, statistical calculation, canvas coordinate projection, 
+    and output serialization have been completely diagnosed, rooted, fixed, and verified across automated and manual test scenarios.
+  </p>
+
+  <h3>Master Bug Fix Log (Official Table)</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 5%;">#</th>
+        <th style="width: 23%;">Bug / Issue Identified</th>
+        <th style="width: 22%;">How You Reproduced It</th>
+        <th style="width: 25%;">Root Cause</th>
+        <th style="width: 25%;">Fix Implemented & Tested</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center; font-weight:bold;">1</td>
+        <td><strong>Inverted Min and Max Stat Cards</strong></td>
+        <td>Uploaded sample marks; the Min card displayed the highest score (e.g. 98) while the Max card displayed the lowest score (e.g. 12).</td>
+        <td>HTML markup IDs were swapped: <code>&lt;b id="max"&gt;</code> was placed in the Min card, and <code>&lt;b id="min"&gt;</code> in the Max card.</td>
+        <td>Swapped IDs to <code>#minStat</code> and <code>#maxStat</code> to align with card labels. Verified across 3 datasets: Min displays lowest and Max displays highest.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">2</td>
+        <td><strong>Course List Duplication & Stale Dropdown Options</strong></td>
+        <td>Uploaded a file containing 50 records of "CS F111", or uploaded a second file sequentially without refreshing.</td>
+        <td><code>file.onchange</code> mapped directly over student rows without deduplication, and <code>course.innerHTML</code> was never cleared on re-upload.</td>
+        <td>Reset <code>course.innerHTML</code> on upload, extracted distinct names using <code>Array.from(new Set(...))</code>. Tested with 100+ row multi-course file.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">3</td>
+        <td><strong>File Picker Rejection of Modern .xlsx Files</strong></td>
+        <td>Attempted to select standard modern <code>.xlsx</code> spreadsheet in operating system file dialog.</td>
+        <td>The file input element had <code>accept=".xls"</code>, preventing or hiding standard <code>.xlsx</code> spreadsheets.</td>
+        <td>Updated attribute to <code>accept=".xlsx, .xls, .csv"</code>. Tested picking and dragging <code>.xlsx</code>, <code>.xls</code>, and <code>.csv</code> workbooks.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">4</td>
+        <td><strong>Division by Zero (NaN) on Empty or Uniform Datasets</strong></td>
+        <td>Selected an empty course, or a cohort where all students scored identical marks (e.g., all 75).</td>
+        <td><code>computeStats()</code> divided by <code>m.length</code> without checking for zero. Uniform marks yielded &sigma; = 0, causing division by zero in Gaussian PDF.</td>
+        <td>Added early empty-dataset guards returning "—", and clamped &sigma; = max(&sigma;, 0.5). Tested with 0 students and 50 uniform students without errors.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">5</td>
+        <td><strong>Bell Curve X-Axis Misaligned with Histogram Bins</strong></td>
+        <td>Inspected canvas overlay. The Gaussian curve peak drifted progressively leftward as marks increased towards 100.</td>
+        <td>Histogram bars used step size of 32px (30 + i &times; 32), while bell curve used 30px (30 + (x/10) &times; 30). Different coordinate spaces.</td>
+        <td>Unified coordinate system with shared step size (34px) and bar width. Tested normal distributions; peak aligns exactly with cohort mean (&mu;).</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">6</td>
+        <td><strong>Concurrent Animation Frame Leak on Rapid Changes</strong></td>
+        <td>Quickly adjusted grade boundary dropdowns or switched courses repeatedly.</td>
+        <td><code>drawHistogram()</code> launched new <code>requestAnimationFrame(animate)</code> loops on every change without cancelling active loops.</td>
+        <td>Tracked <code>currentAnimFrameId</code> and invoked <code>cancelAnimationFrame()</code> before spawning any new animation loop. Rapid scrubbing observed at stable 60 FPS.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">7</td>
+        <td><strong>Fractional Marks Fall Through Boundaries (Grade Loss)</strong></td>
+        <td>Inputted non-integer marks such as 79.4 or 69.8. Student received no grade and was excluded from CSV export.</td>
+        <td>Boundaries are discrete integers (70-79 then 80-100). A mark of 79.4 is &gt; 79 and &lt; 80, so it matched neither condition.</td>
+        <td>Added mandatory integer rounding (<code>Math.round(Number(marks))</code>) during ingestion per BITS policy (80.2 &rarr; 81, 79.4 &rarr; 79). Verified 100% grade assignment.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">8</td>
+        <td><strong>Premature Timer Start & Permanent Post-Export Freeze</strong></td>
+        <td>Opened page, waited 10 minutes before picking a file; timer counted idle time. Clicking download stopped timer permanently.</td>
+        <td><code>gradingStartTime</code> was captured at page evaluation. <code>download.onclick</code> invoked <code>clearInterval()</code> with no resume mechanism.</td>
+        <td>Tied timer initiation to active course selection. Added pause/resume tracking and immediate first-second tick display. Verified timer accuracy.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">9</td>
+        <td><strong>Grade Cascade Allows Negative Values & Invalid Selects</strong></td>
+        <td>Decreased Grade A Min down towards 0. Lower dropdowns set to -1, causing unselected or corrupted select states.</td>
+        <td><code>cascadeMaxFrom()</code> set <code>targetMax = prevMin - 1</code>. When <code>prevMin = 0</code>, target was -1, which does not exist in options (0..100).</td>
+        <td>Clamped target values using <code>Math.max(0, prevMin - 1)</code> and enforced Min &lt; Max. Tested lowering boundaries to 0; clamped cleanly.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">10</td>
+        <td><strong>CSV Export Lacks Boundary Validation & Field Escaping</strong></td>
+        <td>Exported CSV when instructor name had a comma (e.g. "Sharma, Dr. P.") or when marks fell outside unvalidated ranges.</td>
+        <td>Raw string concatenation without RFC 4180 quotes. Students outside ranges produced empty or missing grade records silently.</td>
+        <td>Implemented RFC 4180 compliant CSV quoting function, validated 100% student grade matching, and cleaned memory via <code>URL.revokeObjectURL()</code>.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">11</td>
+        <td><strong>CSS Animation Class Removed Before Transition Renders</strong></td>
+        <td>Observed card lift effect when changing select option; cards snapped instantly with visual stutter.</td>
+        <td><code>setTimeout(() =&gt; card.classList.remove("lift"), 30)</code> removed class after 30ms, while CSS transition was set to 250ms.</td>
+        <td>Adjusted timeout to 250ms matching the CSS transition duration. Tested select changes; verified smooth, fluid card elevation.</td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center; font-weight:bold;">12</td>
+        <td><strong>Full Scale Coverage [0–100] Boundary Check Missing</strong></td>
+        <td>Set Grade A Max to 90 or Grade E Min to 10; validation passed despite scores 91-100 and 0-9 having no assigned grade.</td>
+        <td><code>validateRanges()</code> only evaluated internal adjacent boundaries, omitting checks for global scale endpoints (0 and 100).</td>
+        <td>Enforced strict endpoint validation (<code>Amax === 100</code> and <code>Emin === 0</code>). Tested setting A Max to 95; UI flagged error and blocked export.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Stage 2 Reimagined Enhancements Summary</h3>
+  <ol>
+    <li><strong>One-Click Academic Grading Presets:</strong> BITS Default, Statistical Bell Curve (&mu; &plusmn; &sigma;), Lenient, and Strict profiles.</li>
+    <li><strong>Live Student Grade Audit Roster:</strong> Real-time student table with instant search and automatic Borderline (&plusmn;1 mark) warnings.</li>
+    <li><strong>Continuous Grade Spectrum Visualizer:</strong> Dynamic 0–100 multi-segmented color spectrum confirming 100% continuous coverage.</li>
+    <li><strong>Advanced Academic Statistics:</strong> Adds Standard Deviation (&sigma;), Interquartile Range (IQR), and Class Passing Rate %.</li>
+    <li><strong>In-App Demo Dataset & Template Generator:</strong> One-click simulation with 144 students across 3 courses and downloadable blank .xlsx templates.</li>
+    <li><strong>Dual-Format Export Suite:</strong> Clean RFC 4180 CSV export and formatted multi-sheet Excel (.xlsx) workbooks with executive summary.</li>
+  </ol>
+
+  <p style="margin-top:24pt; border-top:1pt solid #cbd5e1; padding-top:8pt; font-size:9pt; color:#64748b; text-align:center;">
+    BITS Pilani Digital • Advanced Academic Grading Console • CodeForge Challenge V1.0 • Candidate: Aditya Jaiswal
+  </p>
+
+</body>
+</html>
